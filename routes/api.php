@@ -6,17 +6,12 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::post('register', [AuthController::class, 'register'])->name('api.register');
+Route::post('login', [AuthController::class, 'login'])->name('api.login');
 
-
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-
-
-Route::apiResource('todo', TodoController::class)->middleware('auth:sanctum');
-
-Route::get('me', [UserController::class, 'index'])->middleware('auth:sanctum');
-Route::delete('me', [UserController::class, 'destroy'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout'])->name('api.logout');
+    Route::apiResource('todos', TodoController::class);
+    Route::get('me', [UserController::class, 'show'])->name('api.me');
+    // Route::delete('me', [UserController::class, 'destroy']);
+});

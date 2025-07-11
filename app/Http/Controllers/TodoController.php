@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
+use App\Http\Resources\TodoResource;
 use App\Models\todo;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,8 +15,8 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $todos = Auth::user()->todos()->get();
-        return response()->json($todos, 200);
+        $todos = Auth::user()->todos()->latest()->simplePaginate(3);
+        return TodoResource::collection($todos);
     } 
 
     /**
@@ -29,7 +30,7 @@ class TodoController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'ToDo created',
-            'data' => $todo
+            'data' => new TodoResource($todo),
         ], 201);
     }
 
@@ -48,7 +49,7 @@ class TodoController extends Controller
         return response()->json([
         'status' => true,
         'message' => 'ToDo was found',
-        'data' => $todo
+        'data' => new TodoResource($todo),
         ], 200); 
     }
 
@@ -68,7 +69,7 @@ class TodoController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Updated successfully',
-            'data' => $todo
+            'data' => new TodoResource($todo)
         ], 200);
     }
 

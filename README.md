@@ -7,6 +7,8 @@ Features
 - Logout
 - Create, Read, Update, Delete todos
 - Request validation with FormRequest classes
+- API Resource classes for clean, consistent JSON responses
+- Pagination on todo listing
 
 ---
 
@@ -24,7 +26,6 @@ Endpoints (Examples)
 ---
 
 Still To Improve
-- Add API Resource classes for cleaner JSON formatting
-- Add pagination, filtering, and sorting for todos 
+- Add filtering and sorting for todos
 - Improve error handling structure
 - add tags
